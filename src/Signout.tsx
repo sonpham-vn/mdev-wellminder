@@ -1,16 +1,15 @@
 import React from "react";
-import { View, Text, Platform, StyleSheet, Image } from "react-native";
+import { View, Text, Platform, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "./RootStackParams";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Pulse from "react-native-pulse";
-import SigninTab from "./SigninTab";
-import SignupTab from "./SignupTab";
+import { StackActions, useNavigation } from "@react-navigation/native";
 
-type homeProp = StackNavigationProp<RootStackParamList, "Main">;
+type signinProp = StackNavigationProp<RootStackParamList, "Signin">;
 
-function Signin() {
-  const Tab = createMaterialTopTabNavigator();
+function Signout() {
+
+  const navigation = useNavigation<signinProp>();
 
   return (
     <View style={styles.container}>
@@ -27,32 +26,43 @@ function Signin() {
           style={{ width: 300, height: 100 }}
           source={require("../assets/wellminder_logo.png")}
         />
-        <Text style={styles.text_header}>Your journey await!</Text>
+        
         <Image
           resizeMode="contain"
           style={{ width: 300, height: 250 }}
-          source={require("../assets/Home-Icon.png")}
+          source={require("../assets/Signout-Icon.png")}
         />
+
+
+
+<Text style={styles.text_header}>Thank you for using our app!</Text>
+<View style={styles.button}>
+          <TouchableOpacity
+            style={[styles.signIn, { backgroundColor: "#FED8B1" }]}
+            onPress={() => {
+              const popAction = StackActions.pop(1);
+                navigation.dispatch(popAction);
+            }}
+          >
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: "#555",
+                },
+              ]}
+            >
+              Back to Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <Tab.Navigator
-        tabBarOptions={{
-          style: {
-            backgroundColor: "#FED8B100",
-          },
-          indicatorStyle: {
-            backgroundColor: "darkred",
-          },
-        }}
-      >
-        <Tab.Screen name="Sign In" component={SigninTab} />
-        <Tab.Screen name="Sign Up" component={SignupTab} />
-      </Tab.Navigator>
     </View>
   );
 }
 
-export default Signin;
+export default Signout;
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +71,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 0,
   },
@@ -78,6 +88,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     fontFamily: "Cochin",
+    textAlign:"center"
   },
   action: {
     flexDirection: "row",
@@ -106,6 +117,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     marginTop: 50,
+    width: "80%",
     shadowColor: "grey",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },

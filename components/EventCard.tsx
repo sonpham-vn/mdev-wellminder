@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import {
   StyleSheet,
@@ -7,9 +9,12 @@ import {
   Image,
 } from "react-native";
 import { View } from "react-native-animatable";
+import { RootStackParamList } from "../src/RootStackParams";
+type EventProp = StackNavigationProp<RootStackParamList, "Event">;
 
-function ArticleCard({ props, ...rest }: { props: any }) {
+function ArticleCard({ props,emotion, ...rest }: { props: any, emotion:string }) {
   //console.log(props);
+  const navigation = useNavigation<EventProp>();
   let img = { uri: props.imgurl };
   return (
     <View style={{ flex: 1, marginBottom: 20, flexDirection: "row" }}>
@@ -20,7 +25,9 @@ function ArticleCard({ props, ...rest }: { props: any }) {
         <Text style={styles.card_text}>{props.subtitle}</Text>
       </View>
       <View style={{ flex: 0.5 }}>
-        <TouchableOpacity style={[styles.recommend_card]} onPress={() => {}}>
+        <TouchableOpacity style={[styles.recommend_card]} onPress={() => {
+          navigation.navigate("Event", { emotion: emotion, eventInfo:props });
+        }}>
           <Image source={img} style={styles.image}></Image>
         </TouchableOpacity>
       </View>

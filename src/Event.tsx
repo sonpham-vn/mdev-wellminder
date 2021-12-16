@@ -5,26 +5,23 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  Button,
   TouchableOpacity,
-  ScrollView,
-  FlatList,
   ImageBackground,
   Image,
+  ScrollView,
+  Alert
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "./RootStackParams";
 import moodBackground from "../constants/MoodBackground";
-import RecommendCard from "../components/RecommendCard";
-import EventCard from "../components/EventCard";
-import { BorderlessButton } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-type homeProp = StackNavigationProp<RootStackParamList, "Home">;
+type EventProp = StackNavigationProp<RootStackParamList, "Home">;
 
-function Setting(props: any) {
+function Event(props: any) {
   const emotion = props.route.params.emotion;
-  const navigation = useNavigation<homeProp>();
+  const eventInfo = props.route.params.eventInfo;
+  const navigation = useNavigation<EventProp>();
 
   const [recommendList, setRecommendList] = useState([
     { title: "", subtitle: "", imgurl: "url" },
@@ -36,6 +33,9 @@ function Setting(props: any) {
   const [state, setState] = useState({
     nextClassImg: { uri: "url" },
   });
+  
+  let img = { uri: eventInfo.imgurl };
+
 
   return (
     <ImageBackground
@@ -43,6 +43,7 @@ function Setting(props: any) {
       resizeMode="cover"
       style={styles.image}
     >
+      <Image source={img} style={styles.image}></Image>
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.box1}>
           <View style={styles.box1_1}>
@@ -61,84 +62,47 @@ function Setting(props: any) {
             </TouchableOpacity>
           </View>
           <View style={styles.box1_2}>
-            <TouchableOpacity
-              style={[styles.recommend_card]}
-              onPress={() => {}}
-            >
-              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
-                <Ionicons name="ios-card-outline" size={50} color="white" />
-                <Text style={[styles.card_text, { alignSelf: "center" }]}>
-                  Purchase History
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.recommend_card]}
-              onPress={() => {}}
-            >
-              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
-                <Ionicons
-                  name="ios-person-circle-outline"
-                  size={50}
-                  color="white"
-                />
-                <Text style={[styles.card_text, { alignSelf: "center" }]}>
-                  Update Info
-                </Text>
-              </View>
-            </TouchableOpacity>
-
+          <View style = {{alignItems:"center", marginBottom: 10}}>
             <TouchableOpacity
               style={[styles.recommend_card]}
               onPress={() => {
-                
+                Alert.alert(
+                  "Success!",
+                  "Thank you for register for this event. Details have been sent to your email.",
+                  [
+                    { text: "OK", onPress: () => {const popAction = StackActions.pop(1);
+                      navigation.dispatch(popAction);} }
+                  ]
+                );
               }}
             >
-              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
-                <Ionicons
-                  name="ios-help-buoy-outline"
-                  size={50}
-                  color="white"
-                />
-                <Text style={[styles.card_text, { alignSelf: "center" }]}>
-                  Help
+              
+                <Text style={[styles.card_text]}>
+                  + Register Now
                 </Text>
-              </View>
+              
             </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-              style={[styles.recommend_card]}
-              onPress={() => {
-                
-              }}
-            >
-              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
-                <Ionicons
-                  name="ios-information-circle-outline"
-                  size={50}
-                  color="white"
-                />
-                <Text style={[styles.card_text, { alignSelf: "center" }]}>
-                  About
-                </Text>
-              </View>
-            </TouchableOpacity>
+              
+            <ScrollView >
+            <Text style={styles.title_text}>{eventInfo.title}</Text>
+              <Text style={styles.subtitle_text}>{eventInfo.subtitle}</Text>
 
-            <TouchableOpacity
-              style={[styles.recommend_card]}
-              onPress={() => {
-                navigation.navigate("Signin");
-                navigation.navigate("Signout");
-              }}
-            >
-              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
-                <Ionicons name="ios-log-out-outline" size={50} color="white" />
-                <Text style={[styles.card_text, { alignSelf: "center" }]}>
-                  Sign Out
-                </Text>
-              </View>
-            </TouchableOpacity>
+              <Text style={styles.title_text}>Details:</Text>
+              <Text style={styles.subtitle_text}>80 days around the world, we’ll find a pot of gold just sitting where the rainbow’s ending. Time — we’ll fight against the time, and we’ll fly on the white wings of the wind. 80 days around the world, no we won’t say a word before the ship is really back. Round, round, all around the world. Round, all around the world. Round, all around the world. Round, all around the world.
+
+Barnaby The Bear’s my name, never call me Jack or James, I will sing my way to fame, Barnaby the Bear’s my name. Birds taught me to sing, when they took me to their king, first I had to fly, in the sky so high so high, so high so high so high, so — if you want to sing this way, think of what you’d like to say, add a tune and you will see, just how easy it can be. Treacle pudding, fish and chips, fizzy drinks and liquorice, flowers, rivers, sand and sea, snowflakes and the stars are free.</Text>
+
+              <Text style={styles.title_text}>Number of people:</Text>
+              <Text style={styles.subtitle_text}>20</Text>
+
+              <Text style={styles.title_text}>Requirement:</Text>
+              <Text style={styles.subtitle_text}>- Strength </Text>
+              <Text style={styles.subtitle_text}>- Stamia </Text>
+              
+            </ScrollView>
+          
           </View>
         </View>
       </SafeAreaView>
@@ -179,10 +143,12 @@ const styles = StyleSheet.create({
   box1_1: {
     flex: 1,
     marginBottom: 20,
+    marginTop: -400
   },
 
   box1_2: {
     flex: 2,
+    marginTop:60,
     marginBottom: 30,
   },
 
@@ -222,23 +188,19 @@ const styles = StyleSheet.create({
   },
 
   recommend_card: {
-    backgroundColor: "#ffffff50",
+    backgroundColor: "#ff5349",
     shadowColor: "grey",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
-    width: "100%",
+    width: "50%",
     height: 70,
     borderWidth: 0,
     borderRadius: 20,
     alignContent: "center",
     padding: 5,
-    paddingLeft: 20,
     marginBottom: 10,
-  },
-
-  card_text: {
-    paddingLeft: 10,
-    fontSize: 18,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   button_shadown: {
@@ -246,6 +208,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
   },
+
+  card_text: {
+    paddingLeft: 10,
+    fontSize: 18,
+    color:"white",
+    fontWeight:"bold"
+  },
+
+  title_text: {
+    paddingLeft: 10,
+    fontSize: 18,
+    color:"#555555",
+    fontWeight:"bold",
+    marginBottom: 5
+  },
+
+  subtitle_text: {
+    paddingLeft: 10,
+    fontSize: 18,
+    color:"#555555",
+    marginBottom: 5
+  },
 });
 
-export default Setting;
+export default Event;

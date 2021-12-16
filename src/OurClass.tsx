@@ -5,9 +5,7 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  Button,
   TouchableOpacity,
-  ScrollView,
   FlatList,
   ImageBackground,
   Image,
@@ -15,11 +13,10 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "./RootStackParams";
 import moodBackground from "../constants/MoodBackground";
-import RecommendCard from "../components/RecommendCard";
 import EventCard from "../components/EventCard";
-import { BorderlessButton } from "react-native-gesture-handler";
 
-type layout1Prop = StackNavigationProp<RootStackParamList, "Home">;
+
+type eventProp = StackNavigationProp<RootStackParamList, "Event">;
 
 function OurClass({
   emotionChanger,
@@ -43,6 +40,8 @@ function OurClass({
     nextClassTitle: "",
     nextClassSubtitle:""
   });
+
+  const navigation = useNavigation<eventProp>();
 
   function fetchEventList() {
     setState({
@@ -133,7 +132,7 @@ function OurClass({
           data={articleList}
           keyExtractor={(item, index) => index.toString()}
 
-          renderItem={({ item }) => <EventCard props={item}></EventCard>}
+          renderItem={({ item }) => <EventCard props={item} emotion={emotion}></EventCard>}
         ></FlatList>
       </SafeAreaView>
     </ImageBackground>

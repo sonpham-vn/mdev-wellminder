@@ -19,7 +19,7 @@ import ArticleCard from "../components/ArticleCard";
 import { BorderlessButton } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-type layout1Prop = StackNavigationProp<RootStackParamList, "Setting">;
+type settingProp = StackNavigationProp<RootStackParamList, "Setting">;
 
 function Home({
   emotionChanger,
@@ -31,7 +31,7 @@ function Home({
   emotion: any;
   userInfo: any;
 }) {
-  const navigation = useNavigation<layout1Prop>();
+  const navigation = useNavigation<settingProp>();
   const [recommendList, setRecommendList] = useState([
     { title: "", subtitle: "", imgurl: "url" },
   ]);
